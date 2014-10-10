@@ -34,11 +34,10 @@ var shiftedLeft;// = 0;
 icon.push("images/a.png");
 icon.push("images/b.jpg");
 icon.push("images/c.gif");
+icon.push("images/firefoxrgb2oa.png");
 icon.push("images/d.png");
 icon.push("images/e.gif");
 icon.push("images/firefoxrgb2oa.png");
-
-//action[0]
 
 // zoom should be based on x coordinate relative to the original position and width of the dock
 
@@ -87,6 +86,7 @@ function initialize() {
 
   debug = document.getElementById("debug");
 
+  resetDock();
 } // end initialize
 
 function resetDock() {
@@ -106,19 +106,18 @@ function resetDock() {
 function updateDock(e) {
 // right here, possibly check to see if the mouse has moved. if it hasn't, quit the function
 
-// this is here for IE, since it doesn't use the e passing and stores
-// last event in window.event
+  // this is here for IE, since it doesn't use the e passing and stores
+  // last event in window.event
   if (!e) var e = window.event;
   // get things we need
   mouseX = e.clientX;
 	
-  newsize = 0
+  newsize = 0;
 
   for(i=0;i<icon.length;i++) {
     zoomFactor = getZoomFactor(mouseX, i); // temp line, not always passing callerIndex
-		newsize = newsize + parseInt(changeSize(i,zoomFactor));
-
-	}
+	newsize = newsize + parseInt(changeSize(i,zoomFactor));
+  }
 
   if(getZoomFactor(mouseX, 0)>1) {
     shiftedLeft = dockLeft - (mouseX - dockLeft) + "px";
@@ -128,7 +127,7 @@ function updateDock(e) {
   // might need to be changed
     dock.style.left = shiftedLeft;
   }
-	// might be good to cache the last value calculated by this function in a global, that way the first
+	// might be good to cache the last value calculated by this function, that way the first
 	// time it gets calculated, it's stored and any time the dock is updated, it can be set there, since this won't run,
 	// or if it does, it'll be overwritten
 	
@@ -156,7 +155,7 @@ function changeSize(i, scale) {
       currentobj = document.getElementById("dockIcon"+i);
       currentleft = parseInt(currentobj.style.left);
       currentobj.style.left = (currentleft+offset)+"px";
-			sigmaOffset =+ offset;
+      sigmaOffset =+ offset;
     }
 
 		// move the dock.left half the offset
@@ -193,7 +192,7 @@ function getZoomFactor(x, iconIndex) {
 
   spread = .002;
   
-  factor = -1*spread*temp*temp+maxScale;
+  factor = -1 * spread * temp * temp + maxScale;
   if(factor<1) {factor = 1;}
   return factor;
 }
